@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import CustomButton from '../../components/CustomButton';
 import Timer from '../../components/Timer';
 import Layout from '../../components/Layout';
 import Header from '../../components/Header';
@@ -24,6 +25,13 @@ const Home = () => {
                         type='Ready' 
                         label='Preparar-se'
                         time ='00:10'
+                    />
+                    
+                    <View style={{ height: 30, width: '100%' }} />
+
+                    <CustomButton 
+                        type='Medium' 
+                        label='INICIAR'
                     />
                 </View>
             </View>

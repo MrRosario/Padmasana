@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable, TouchableOpacity, View, Text, StyleSheet } from 'react-native';
+import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
 import { Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
 
 const Timer = ({ type, label, time }) => {
