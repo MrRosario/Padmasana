@@ -1,9 +1,9 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 
-const CustomButton = ({ type, label }) => {
+const CustomButton = ({ size, label }) => {
     
-    const btnSize = type === 'large'
+    const btnSize = size === 'large'
         ? styles.btnLarge
         : styles.btnMedium;
 

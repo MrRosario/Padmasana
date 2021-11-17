@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import CustomButton from '../../components/CustomButton';
+import TimerEditor from '../../components/TimerEditor';
 import Timer from '../../components/Timer';
 import Layout from '../../components/Layout';
 import Header from '../../components/Header';
@@ -30,10 +31,13 @@ const Home = () => {
                     <View style={{ height: 30, width: '100%' }} />
 
                     <CustomButton 
-                        type='Medium' 
+                        size='Medium' 
                         label='INICIAR'
                     />
                 </View>
+
+                <TimerEditor title='DURAÇÃO' />
+
             </View>
         </Layout>
     )
