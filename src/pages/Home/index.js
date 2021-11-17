@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import CustomButton from '../../components/CustomButton';
 import TimerEditor from '../../components/TimerEditor';
@@ -7,12 +7,31 @@ import Layout from '../../components/Layout';
 import Header from '../../components/Header';
 
 const Home = () => {
+
+    const [showModal, setShowModal] = useState(false);
+
+    const handleModal = (type) => {
+        
+        if(type === 'CONFIM'){
+            setShowModal(true);
+        }
+        else{
+            setShowModal(false)
+        }
+
+        console.log("type: ", type);
+    }
+    
+    const handleEditTime = () => {
+        setShowModal(true)
+    }
+
     return(
         <Layout>
             <Header />
 
             <View style={styles.body}>
-                <Text style={styles.bigTitile}>
+                <Text style={styles.bigTitle}>
                     Vamos Meditar!
                 </Text>
 
@@ -21,11 +40,13 @@ const Home = () => {
                         type='Duration' 
                         label='Duração'
                         time ='10:00'
+                        callback={handleEditTime}
                     />
                     <Timer
                         type='Ready' 
                         label='Preparar-se'
                         time ='00:10'
+                        callback={handleEditTime}
                     />
                     
                     <View style={{ height: 30, width: '100%' }} />
@@ -36,7 +57,14 @@ const Home = () => {
                     />
                 </View>
 
-                <TimerEditor title='DURAÇÃO' />
+                {
+                    showModal 
+                    ?   <TimerEditor 
+                            title='DURAÇÃO' 
+                            callback={handleModal}
+                        /> 
+                    : null
+                }
 
             </View>
         </Layout>
@@ -48,7 +76,7 @@ const styles = StyleSheet.create({
         paddingVertical: 20,
         paddingHorizontal: 16
     },
-    bigTitile: {
+    bigTitle: {
         fontWeight: '600',
         fontSize: 26,
         color: '#000000',

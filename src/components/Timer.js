@@ -2,14 +2,13 @@ import React from 'react';
 import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
 import { Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
 
-const Timer = ({ type, label, time }) => {
-    
-    const handleTimer = () => {
-        console.log("PRESSABLE:")
-    }
+const Timer = ({ type, label, time, callback }) => {
 
     return(
-        <TouchableOpacity style={styles.container} onPress={handleTimer}>
+        <TouchableOpacity 
+            style={styles.container} 
+            onPress={callback}
+        >
             {
                 type === 'Duration' 
                 ? <MaterialCommunityIcons name="timer-outline" size={24} color="#B2B2B2" />
