@@ -1,6 +1,7 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Home from './pages/Home';
 import Profile from './pages/Profile';
 
@@ -30,7 +31,8 @@ const Routes = () => {
                 tabBarActiveTintColor: '#FF5E13',
                 tabBarInactiveTintColor: '#ffffff',
                 tabBarStyle: { backgroundColor: '#272727', height: 60 },
-                tabBarLabelStyle: { fontSize: 14, fontWeight: '700' }
+                tabBarLabelStyle: { fontSize: 14, fontWeight: '700' },
+                tabBarHideOnKeyboard: true
             })}
         >
             <Tab.Screen 
