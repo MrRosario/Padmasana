@@ -1,10 +1,31 @@
 import React from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 
-const TimerEditor = ({ title, callback }) => {
+const TimerEditor = ({ 
+    title, 
+    callback, 
+    min,
+    sec,
+    setDurMin,
+    setDurSec,
+    setReadyMin,
+    setReadySec
+}) => {
 
     const onChangeNumber = (type, value) => {
-        console.log(`Type: ${type}, Value: ${value} `);
+        
+        if(title==='DURAÇÃO'){
+            type === 'min' 
+                ? setDurMin(value)
+                : setDurSec(value);
+        }
+        if(title==='PREPARAR-SE'){
+            type === 'min' 
+                ? setReadyMin(value)
+                : setReadySec(value);
+        }
+
+        console.log(`TIPO: ${type}, VALOR: ${value} `);
     }
 
     return(
@@ -19,17 +40,15 @@ const TimerEditor = ({ title, callback }) => {
                 <Input 
                     type='min'
                     label='minutos'
-                    isFocused={true}
-                    defaultValue='10'
+                    defaultValue={min}
                     callback={onChangeNumber}
                 />
                 <Text style={styles.timeDots}>:</Text>
                 <Input 
                     type='sec'
                     label='segundos'
-                    isFocused={false}
+                    defaultValue={sec}
                     callback={onChangeNumber}
-                    defaultValue='0'
                 />
             </View>
             
@@ -41,7 +60,7 @@ const TimerEditor = ({ title, callback }) => {
                 />
                 <View 
                     style={{
-                        height: 50,
+                        height: '100%',
                         borderWidth: 0.5,
                         borderColor: '#000000'
                     }} 
@@ -52,13 +71,24 @@ const TimerEditor = ({ title, callback }) => {
                     label={`OK`} 
                 />
             </View>
-
         </View>
     )
 }
 
-function Input({ type, label, callback, isFocused, defaultValue }){
+function Input({ type, label, callback, defaultValue }){
     const [number, setNumber] = React.useState(defaultValue);
+    
+    const onCheckLimit = (value) => {
+        const parsedQty = Number.parseInt(value);
+
+        if (Number.isNaN(parsedQty)) {
+          number(0);
+        } else if (parsedQty > 10) {
+          number(10);
+        } else {
+          number(parsedQty);
+        }
+    }
 
     return(
         <View>
@@ -72,8 +102,6 @@ function Input({ type, label, callback, isFocused, defaultValue }){
                 value={number}
                 maxLength={2}
                 keyboardType="numeric"
-                autoFocus={isFocused}
-                blurOnSubmit={true}
             />
             <Text style={styles.inputLabel}>
                 {label}
@@ -131,7 +159,8 @@ const styles = StyleSheet.create({
     pickerContainer: {
         height: 115,
         backgroundColor: '#E9E9E9',
-        borderWidth: 0.5,
+        borderBottomWidth: 0.5,
+        borderTopWidth: 0.5,
         borderColor: '#000000',
         flexDirection: 'row',
         justifyContent: 'center',

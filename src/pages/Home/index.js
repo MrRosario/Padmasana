@@ -9,6 +9,17 @@ import Header from '../../components/Header';
 const Home = () => {
 
     const [showModal, setShowModal] = useState(false);
+    const [selectedModal, setSelectedModal] = useState('');
+
+    const [durMin, setDurMin] = useState('10');
+    const [durSec, setDurSec] = useState('00');
+    const [readyMin, setReadyMin] = useState('00');
+    const [readySec, setReadySec] = useState('10');
+    
+    // console.log("durMin: ", durMin);    
+    // console.log("durSec: ", durSec);
+    console.log("readyMin: ", readyMin);
+    console.log("readySec: ", readySec);
 
     const handleModal = (type) => {
         
@@ -18,12 +29,11 @@ const Home = () => {
         else{
             setShowModal(false)
         }
-
-        console.log("type: ", type);
     }
     
-    const handleEditTime = () => {
-        setShowModal(true)
+    const handleEditTime = (type) => {
+        setShowModal(true);
+        setSelectedModal(type)
     }
 
     return(
@@ -39,13 +49,15 @@ const Home = () => {
                     <Timer
                         type='Duration' 
                         label='Duração'
-                        time ='10:00'
+                        min={durMin}
+                        sec={durSec}
                         callback={handleEditTime}
                     />
                     <Timer
                         type='Ready' 
                         label='Preparar-se'
-                        time ='00:10'
+                        min={readyMin}
+                        sec={readySec}
                         callback={handleEditTime}
                     />
                     
@@ -58,14 +70,29 @@ const Home = () => {
                 </View>
 
                 {
-                    showModal 
-                    ?   <TimerEditor 
+                    showModal && selectedModal === 'Duration' && (
+                        <TimerEditor 
                             title='DURAÇÃO' 
+                            setDurMin={setDurMin}
+                            setDurSec={setDurSec}
+                            min={durMin}
+                            sec={durSec}
                             callback={handleModal}
-                        /> 
-                    : null
+                        />
+                    ) 
                 }
-
+                {
+                    showModal && selectedModal === 'Ready' && (
+                        <TimerEditor 
+                            title='PREPARAR-SE' 
+                            setReadyMin={setReadyMin}
+                            setReadySec={setReadySec}
+                            min={readyMin}
+                            sec={readySec}
+                            callback={handleModal}
+                        />
+                    ) 
+                }
             </View>
         </Layout>
     )

@@ -2,12 +2,14 @@ import React from 'react';
 import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
 import { Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
 
-const Timer = ({ type, label, time, callback }) => {
+const Timer = ({ type, label, min, sec, callback }) => {
+    
+    console.log(`TYPE: ${type}, MIN-${min}: SEC-${sec}`);
 
     return(
         <TouchableOpacity 
             style={styles.container} 
-            onPress={callback}
+            onPress={()=> callback(type)}
         >
             {
                 type === 'Duration' 
@@ -19,7 +21,7 @@ const Timer = ({ type, label, time, callback }) => {
                     {label}
                 </Text>
                 <Text style={styles.time}>
-                    {time}
+                    {`${min}:${sec}`}
                 </Text>
             </View>
             <Entypo name="chevron-right" size={24} color="black" />
