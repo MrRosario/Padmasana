@@ -3,8 +3,6 @@ import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
 import { Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
 
 const Timer = ({ type, label, min, sec, callback }) => {
-    
-    console.log(`TYPE: ${type}, MIN-${min}: SEC-${sec}`);
 
     return(
         <TouchableOpacity 
