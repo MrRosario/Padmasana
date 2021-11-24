@@ -18,45 +18,66 @@ const Home = () => {
     const [readySec, setReadySec] = useState('');
 
     useEffect(() => {
-        storeData();
-        getStoredData();
+        handleLocalData();
     },[]);
 
-    const storeData = async() => {
+    const handleLocalData = async() => {
         try {
-            const strgDuration = await AsyncStorage.getItem('duration_input');
-            const strgReady = await AsyncStorage.getItem('ready_input');
+            const durationData = await AsyncStorage.getItem('duration_input');
+            const readyData = await AsyncStorage.getItem('ready_input');
 
-            //When there's no data stored localy
-            if(strgDuration === null && strgReady === null) {
-                await AsyncStorage.setItem('duration_input', JSON.stringify({min: '20', sec: '00'}) );
-                await AsyncStorage.setItem('ready_input', JSON.stringify({min: '00', sec: '20' }) );
+            if(durationData === null && readyData === null) {
+                setDurMin('10');
+                setDurSec('00');
+
+               await AsyncStorage.setItem('duration_input', JSON.stringify({
+                    min: '10', 
+                    sec: '00'
+                }));
+
+                setReadyMin('00');
+                setReadySec('07');
+
+                await AsyncStorage.setItem('ready_input', JSON.stringify({
+                    min: '00', 
+                    sec: '07' 
+                }));
+
             } else {
-
+                storeData(durationData, readyData);
             }
-        } catch (e) {
-          // saving error
+        } catch (err) {
+            console.error(err.message);
         }
     }
 
-    const getStoredData = async () => {
-        try {
-          const durationData = await AsyncStorage.getItem('duration_input');
-          const readyData = await AsyncStorage.getItem('ready_input');
+    const storeData = (durationData, readyData) => {
+        setDurMin(JSON.parse(durationData).min);
+        setDurSec(JSON.parse(durationData).sec);
 
-          setDurMin(JSON.parse(durationData).min || '10');
-          setDurSec(JSON.parse(durationData).sec || '00');
-
-          setReadyMin(JSON.parse(readyData).min || '00');
-          setReadySec(JSON.parse(readyData).sec || '10');
-        } catch(e) {
-          // error reading value
-        }
+        setReadyMin(JSON.parse(readyData).min);
+        setReadySec(JSON.parse(readyData).sec);
     }
-    const handleModal = (type) => {
 
-        if(type === 'CONFIM'){
-            setShowModal(true);
+    const handleModal = async (type, title, minVal, minSec) => {
+
+        if(type === 'CONFIRM'){
+            if(title === 'DURAÇÃO'){
+                AsyncStorage.setItem('duration_input', JSON.stringify({
+                    min: minVal || durMin, 
+                    sec: minSec || durSec
+                })).then(()=> {
+                    setShowModal(false);
+                });
+            }
+            else {
+                AsyncStorage.setItem('ready_input', JSON.stringify({
+                    min: minVal || readyMin, 
+                    sec: minSec || readySec
+                })).then(() => {
+                    setShowModal(false);
+                });
+            }
         }
         else{
             setShowModal(false)

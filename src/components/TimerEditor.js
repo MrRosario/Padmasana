@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 
 const TimerEditor = ({ 
@@ -12,20 +12,42 @@ const TimerEditor = ({
     setReadySec
 }) => {
 
+    const [timeMin, setTimeMin] = useState('');
+    const [timeSec, setTimeSec] = useState('');
+
+    const setValues = (title, timeType, value) => {
+        if(title === 'DURAÇÃO'){
+            if(timeType === 'min'){
+                setDurMin(value); 
+                setTimeMin(value);
+            } else {
+                setDurSec(value);
+                setTimeSec(value);
+            }
+        }
+
+        if(title === 'PREPARAR-SE'){
+            if(timeType === 'min'){
+                setReadyMin(value); 
+                setTimeMin(value);
+            }else{
+                setReadySec(value);
+                setTimeSec(value);
+            }
+        }
+    }
+
     const onChangeNumber = (type, value) => {
-        
         if(title==='DURAÇÃO'){
             type === 'min' 
-                ? setDurMin(value)
-                : setDurSec(value);
+                ? setValues(title, 'min', value)
+                : setValues(title, 'sec', value);
         }
         if(title==='PREPARAR-SE'){
             type === 'min' 
-                ? setReadyMin(value)
-                : setReadySec(value);
+                ? setValues(title, 'min', value)
+                : setValues(title, 'sec', value);
         }
-
-        console.log(`TIPO: ${type}, VALOR: ${value} `);
     }
 
     return(
@@ -68,6 +90,9 @@ const TimerEditor = ({
                 <Button 
                     callback={callback}
                     type="CONFIRM"
+                    title={title}
+                    timeMin={timeMin}
+                    timeSec={timeSec}
                     label={`OK`} 
                 />
             </View>
@@ -77,18 +102,6 @@ const TimerEditor = ({
 
 function Input({ type, label, callback, defaultValue }){
     const [number, setNumber] = React.useState(defaultValue);
-    
-    const onCheckLimit = (value) => {
-        const parsedQty = Number.parseInt(value);
-
-        if (Number.isNaN(parsedQty)) {
-          number(0);
-        } else if (parsedQty > 10) {
-          number(10);
-        } else {
-          number(parsedQty);
-        }
-    }
 
     return(
         <View>
@@ -109,11 +122,12 @@ function Input({ type, label, callback, defaultValue }){
         </View>
     )
 }
-function Button({ label, type, callback }){
+
+function Button({ label, type, title, timeMin, timeSec, callback }){
     return(
         <TouchableOpacity 
             style={styles.button} 
-            onPress={()=> callback(type)}
+            onPress={()=> callback(type, title, timeMin, timeSec)}
         >
             <Text style={styles.btnLabel}>
                 {label}
