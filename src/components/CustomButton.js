@@ -1,14 +1,14 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 
-const CustomButton = ({ size, label }) => {
+const CustomButton = ({ size, label, setModalVisible }) => {
     
     const btnSize = size === 'large'
         ? styles.btnLarge
         : styles.btnMedium;
 
     const handleClick = () => {
-        console.log("BTN iniciar:")
+        setModalVisible(true);
     }
 
     return(

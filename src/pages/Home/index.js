@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import CustomModal from '../../components/CustomModal'
 import CustomButton from '../../components/CustomButton';
 import TimerEditor from '../../components/TimerEditor';
 import Timer from '../../components/Timer';
@@ -11,6 +12,7 @@ const Home = () => {
 
     const [showModal, setShowModal] = useState(false);
     const [selectedModal, setSelectedModal] = useState('');
+    const [modalVisible, setModalVisible] = useState(false);
 
     const [durMin, setDurMin] = useState('');
     const [durSec, setDurSec] = useState('');
@@ -119,6 +121,7 @@ const Home = () => {
                     <CustomButton
                         size='Medium'
                         label='INICIAR'
+                        setModalVisible={setModalVisible}
                     />
                 </View>
 
@@ -147,6 +150,13 @@ const Home = () => {
                     )
                 }
             </View>
+
+            {   modalVisible &&
+                <CustomModal 
+                    modalVisible={modalVisible} 
+                    setModalVisible={setModalVisible}
+                />
+            }
         </Layout>
     )
 }
