@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Modal, StyleSheet, TouchableOpacity, Text, View, Platform, StatusBar } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
-import Timer from "./Timer";
 
 const CustomModal = ({ modalVisible, setModalVisible }) => {
 
@@ -59,7 +58,7 @@ function Timmer(){
   )
 }
 
-function PlayPauseButton(){
+function PlayPauseButton({ btnType }){
   return(
     <TouchableOpacity style={styles.playButton}>
       <AntDesign 
