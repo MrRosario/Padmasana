@@ -151,12 +151,18 @@ const Home = () => {
                 }
             </View>
 
-            {   modalVisible &&
+            {   modalVisible && 
                 <CustomModal 
+                    durMin={durMin}
+                    durSec={durSec}
+                    readyMin={readyMin}
+                    readySec={readySec}
+                    selectedModal={selectedModal}
                     modalVisible={modalVisible} 
                     setModalVisible={setModalVisible}
                 />
             }
+            
         </Layout>
     )
 }

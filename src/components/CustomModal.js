@@ -1,11 +1,39 @@
 import React, { useState } from "react";
-import { Modal, StyleSheet, TouchableOpacity, Text, View, Platform, StatusBar } from "react-native";
+import { 
+  Modal, 
+  StyleSheet,
+  Pressable, 
+  TouchableOpacity, 
+  Text, 
+  View, 
+  Platform, 
+  StatusBar 
+} from "react-native";
 import { AntDesign } from '@expo/vector-icons';
 
-const CustomModal = ({ modalVisible, setModalVisible }) => {
+const CustomModal = (props) => {
 
-    
-  console.log("StatusBar: ", StatusBar.currentHeight);
+  const { 
+    modalVisible, 
+    setModalVisible, 
+    selectedModal,
+    durMin, 
+    durSec, 
+    readyMin, 
+    readySec 
+  } = props;
+
+  const [isPlayed, setIsPlayed] = useState(true);
+  const [screenOn, setScreenOn] = useState(false);
+  const [enableClose, setEnableClose] = useState(false);
+  const [isTimerOn, setIsTimerOn] = useState(true);
+
+  console.log(`Preparar-se - Min: ${readyMin}, Sec: ${readySec}`);
+  console.log(`Duração - Min: ${durMin}, Sec: ${durSec}`);
+
+  const getReadyCountDown = () => {
+
+  }
 
   return (
     <View style={styles.container}>
@@ -20,13 +48,15 @@ const CustomModal = ({ modalVisible, setModalVisible }) => {
       >
         <View style={styles.content}>
           <View style={styles.header}>
-            <TouchableOpacity onPress={() => setModalVisible(false)}>
+            <Pressable 
+              disabled={enableClose} 
+              onPress={() => setModalVisible(false)}>
               <AntDesign 
                 name="close" 
                 size={30} 
                 color="#ffffff" 
               />
-            </TouchableOpacity>
+            </Pressable>
           </View>
 
           <View style={styles.body}> 
@@ -34,12 +64,38 @@ const CustomModal = ({ modalVisible, setModalVisible }) => {
                 MEDITAÇÃO
               </Text>
               <Text style={styles.subTitle}>
-                Começa em:
+                Sua meditação começa em:
               </Text>
 
               <View style={styles.timerContainer}>
-                <Timmer />
-                <PlayPauseButton />
+                <Timmer 
+                  durMin={durMin}
+                  durSec={durSec}
+                  readyMin={readyMin}
+                  readySec={readySec}
+                />
+                <PlayPauseButton 
+                  isPlayed={isPlayed} 
+                  setIsPlayed={setIsPlayed}
+                  setEnableClose={setEnableClose}
+                  enableClose={enableClose}
+                />
+
+                <Pressable 
+                  style={[styles.activateScreen]} 
+                  onPress={()=> setScreenOn(!screenOn)}
+                >
+                  <Text style={styles.activateScreenText}>
+                    Manter a tela ligada
+                  </Text>
+                  <View style={
+                    [
+                      styles.screenOnBtn, 
+                      screenOn && styles.screenOnBtnActivated
+                    ]} 
+                  />
+                </Pressable>
+
               </View>
           </View>
         </View>
@@ -48,29 +104,41 @@ const CustomModal = ({ modalVisible, setModalVisible }) => {
   );
 };
 
-function Timmer(){
+function Timmer({ durMin, durSec, readyMin, readySec }){
   return(
     <View style={styles.timer}>
       <Text style={styles.timeText}>
-        00:10
+        {readyMin}:{readySec}
       </Text>
     </View>
   )
 }
 
-function PlayPauseButton({ btnType }){
+function PlayPauseButton({isPlayed, setIsPlayed, setEnableClose, enableClose}){
   return(
-    <TouchableOpacity style={styles.playButton}>
-      <AntDesign 
-        name="playcircleo" 
-        size={70} 
-        color="#ffffff" 
-      />
-      <AntDesign 
-        name="pausecircleo" 
-        size={70} 
-        color="#ffffff"
-      />
+    <TouchableOpacity 
+      onPress={()=>{ 
+        setIsPlayed(!isPlayed);
+        setEnableClose(!enableClose) 
+      }}
+      style={styles.playButton}
+    >
+      {
+        isPlayed ? (
+          <AntDesign 
+            name="playcircleo" 
+            size={70} 
+            color="#ffffff" 
+          />
+        )
+        : (
+          <AntDesign 
+            name="pausecircleo" 
+            size={70} 
+            color="#ffffff"
+          />
+        )
+      }
     </TouchableOpacity>
   )  
 }
@@ -124,8 +192,29 @@ const styles = StyleSheet.create({
   playButton: {
     height: 75,
     width: 75,
-    borderWidth: 1,
-    borderColor: '#000'
+    alignSelf: 'center'
+  },
+  activateScreen: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 50
+  },
+  activateScreenText: {
+    color: PRIMARY_COLOR,
+    fontWeight: '400',
+    fontSize: 16
+  },
+  screenOnBtn: {
+    height: 16,
+    width: 16,
+    borderColor: PRIMARY_COLOR,
+    borderWidth: 2,
+    borderRadius: 50,
+    marginLeft: 10
+  },
+  screenOnBtnActivated: {
+    backgroundColor: '#000'
   }
 });
 
